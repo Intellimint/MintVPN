@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MintVPN</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mint-green: #34d399;
+            --mint-glow: rgba(52, 211, 153, 0.3);
+            --dark-bg: #0a0b0c;
+            --card-bg: rgba(37, 38, 43, 0.7);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --border-glow: rgba(52, 211, 153, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px;
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 20% 30%, var(--mint-glow) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, var(--mint-glow) 0%, transparent 40%);
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(37, 38, 43, 0.4);
+            padding: 30px;
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                0 0 20px var(--mint-glow);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--mint-green);
+            text-shadow: 0 0 15px var(--mint-glow);
+            letter-spacing: 2px;
+        }
+
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 30px 0;
+            padding: 25px;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+        }
+
+        .stat-card {
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(37, 38, 43, 0.6);
+            border: 1px solid var(--border-glow);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--mint-glow);
+        }
+
+        .stat-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--mint-green);
+            margin-top: 0;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--mint-glow);
+        }
+
+        .control-panel {
+            margin: 30px 0;
+            padding: 25px;
+            border-top: 1px solid var(--border-glow);
+            background: var(--glass-bg);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        button {
+            font-family: 'Orbitron', sans-serif;
+            padding: 14px 28px;
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--mint-green), #2bbb84);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--mint-glow);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px var(--mint-glow);
+        }
+
+        .stop-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            margin-left: 15px;
+            border: 1px solid var(--border-glow);
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px var(--mint-glow);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .status-connected {
+            background-color: var(--mint-green);
+            box-shadow: 0 0 15px var(--mint-green);
+        }
+
+        .status-disconnected {
+            background-color: #ef4444;
+            box-shadow: 0 0 15px #ef4444;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            font-weight: 600;
+            background: linear-gradient(to right, var(--mint-green), #4ade80);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px var(--mint-glow);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Add subtle grid background */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(var(--border-glow) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-glow) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MintVPN</h1>
+        
+        <div class="stats-panel">
+            <div class="stat-card">
+                <h3>System Status</h3>
+                <p id="status">Status: Initializing...</p>
+                <p>
+                    <span class="status-indicator" id="network-indicator"></span>
+                    Network Status: <span id="network-status">Disconnected</span>
+                </p>
+            </div>
+            <div class="stat-card">
+                <h3>Resource Usage</h3>
+                <div class="stat-value" id="cpu-usage">0%</div>
+                <div class="stat-label">CPU Usage</div>
+                <div class="stat-value" id="memory-usage">0 MB</div>
+                <div class="stat-label">Memory Usage</div>
+                <div class="stat-value" id="peer-count">0</div>
+                <div class="stat-label">Connected Peers</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <button id="start-btn" class="start-btn">Start Training</button>
+            <button id="stop-btn" class="stop-btn" style="display: none;">Stop Training</button>
+            <button id="settings-btn" class="settings-btn">Settings</button>
+        </div>
+    </div>
+    <script src="renderer.js"></script>
+</body>
+</html>
